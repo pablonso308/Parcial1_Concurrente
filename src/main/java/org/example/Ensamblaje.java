@@ -1,42 +1,26 @@
 package org.example;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+public class Ensamblaje extends Thread {
+    private InterfazCampanas interfaz;
 
-class Ensamblaje extends Thread {
-    private DatabaseReference dbRef;
-
-    public Ensamblaje() {
-        this.dbRef = FirebaseDatabase.getInstance().getReference("componentes");
+    public Ensamblaje(InterfazCampanas interfaz) {
+        this.interfaz = interfaz;
     }
 
     @Override
     public void run() {
         try {
-            System.out.println("Esperando que todos los componentes estén listos...");
+            while (!BufferCompartido.estaVacio()) {
+                String componente = BufferCompartido.consumir();  // Consumir del búfer
+                Thread.sleep((long) (Math.random() * 3000));      // Simula el tiempo de ensamblaje
 
-            // Escuchar cambios en Firebase
-            dbRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String componente = snapshot.getValue(String.class);
-                        System.out.println("Ensamblando componente: " + componente);
-                    }
-                }
+                // Actualizar la interfaz con el componente ensamblado
+                interfaz.agregarComponente(componente);
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.err.println("Error al leer Firebase: " + databaseError.getMessage());
-                }
-            });
-
-        } catch (Exception e) {
+            System.out.println("Todos los componentes han sido ensamblados.");
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 }
-

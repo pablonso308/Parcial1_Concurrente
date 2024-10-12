@@ -1,33 +1,35 @@
 package org.example;
 
-import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        try {
-            // Inicializamos Firebase
-            FirebaseConfig.inicializarFirebase();
+    public static void main(String[] args) throws InterruptedException {
+        // Crear la interfaz gráfica
+        InterfazCampanas interfaz = new InterfazCampanas();
 
-            // Creamos las estaciones de trabajo (hilos)
-            EstacionTrabajo baseEstacion = new EstacionTrabajo("Base");
-            EstacionTrabajo cupulaEstacion = new EstacionTrabajo("Cúpula");
-            EstacionTrabajo soporteEstacion = new EstacionTrabajo("Soporte");
-            EstacionTrabajo calibracionEstacion = new EstacionTrabajo("Calibración");
+        // Crear y arrancar las estaciones de trabajo (productores)
+        EstacionTrabajo estacion1 = new EstacionTrabajo("Base");
+        EstacionTrabajo estacion2 = new EstacionTrabajo("Cúpula");
+        EstacionTrabajo estacion3 = new EstacionTrabajo("Soporte");
+        EstacionTrabajo estacion4 = new EstacionTrabajo("Calibración");
 
-            // Línea de ensamblaje final
-            Ensamblaje ensamblaje = new Ensamblaje();
+        estacion1.start();
+        estacion2.start();
+        estacion3.start();
+        estacion4.start();
 
-            // Iniciamos los hilos de producción
-            baseEstacion.start();
-            cupulaEstacion.start();
-            soporteEstacion.start();
-            calibracionEstacion.start();
+        // Crear y arrancar la línea de ensamblaje (consumidor)
+        Ensamblaje ensamblaje = new Ensamblaje(interfaz);
+        ensamblaje.start();
 
-            // Iniciamos el hilo de ensamblaje
-            ensamblaje.start();
+        // Esperar a que todas las estaciones terminen
+        estacion1.join();
+        estacion2.join();
+        estacion3.join();
+        estacion4.join();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Esperar a que la línea de ensamblaje termine
+        ensamblaje.join();
+
+        System.out.println("Proceso de producción y ensamblaje completado.");
     }
 }

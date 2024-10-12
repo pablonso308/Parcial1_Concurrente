@@ -16,15 +16,10 @@ public class EstacionTrabajo extends Thread {
     public void run() {
         try {
             System.out.println("Produciendo " + tipoComponente + "...");
-            // Simulamos tiempo de producción
-            Thread.sleep((long) (Math.random() * 5000));
+            Thread.sleep((long) (Math.random() * 5000));  // Simula el tiempo de producción
 
-            // Creamos el componente
-            Componentes componente = new Componentes(tipoComponente);
-
-            // Subimos el componente a Firebase
-            dbRef.child(tipoComponente).setValueAsync(componente);
-            System.out.println(tipoComponente + " subido a Firebase.");
+            // Usa la fábrica para producir el componente y agregarlo al búfer
+            Factory.crearComponente(tipoComponente);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
