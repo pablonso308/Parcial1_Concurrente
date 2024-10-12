@@ -1,11 +1,9 @@
 package org.example;
 
-
 // Clase abstracta que define un Componente
-abstract class Componentes {
+class Componentes {
     protected String nombre;
-
-
+    private boolean ensamblado; // Marca si ya se usó en el ensamblaje
 
     public Componentes(String nombre) {
         this.nombre = nombre;
@@ -13,6 +11,13 @@ abstract class Componentes {
 
     public String getNombre() {
         return nombre;
+    }
+    public boolean isEnsamblado() {
+        return ensamblado;
+    }
+
+    public void setEnsamblado(boolean ensamblado) {
+        this.ensamblado = ensamblado;
     }
 }
 
@@ -40,3 +45,8 @@ class SistemaCalibracion extends Componentes {
         super("Sistema de Calibración");
     }
 }
+
+
+
+
+

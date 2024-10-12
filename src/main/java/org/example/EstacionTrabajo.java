@@ -1,14 +1,15 @@
 package org.example;
-import java.util.concurrent.CountDownLatch;
 
-// Cada estación es un hilo que produce un componente
-class EstacionTrabajo extends Thread {
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class EstacionTrabajo extends Thread {
     private String tipoComponente;
-    private CountDownLatch latch;
+    private DatabaseReference dbRef;
 
-    public EstacionTrabajo(String tipoComponente, CountDownLatch latch) {
+    public EstacionTrabajo(String tipoComponente) {
         this.tipoComponente = tipoComponente;
-        this.latch = latch;
+        this.dbRef = FirebaseDatabase.getInstance().getReference("componentes"); // Referencia a Firebase
     }
 
     @Override
@@ -18,12 +19,13 @@ class EstacionTrabajo extends Thread {
             // Simulamos tiempo de producción
             Thread.sleep((long) (Math.random() * 5000));
 
-            // Usamos la fábrica para crear el componente
-            Componentes componente = Factory.crearComponente(tipoComponente);
-            System.out.println(componente.getNombre() + " producido.");
+            // Creamos el componente
+            Componentes componente = new Componentes(tipoComponente);
 
-            // Avisamos a la línea de ensamblaje que hemos terminado
-            latch.countDown();
+            // Subimos el componente a Firebase
+            dbRef.child(tipoComponente).setValueAsync(componente);
+            System.out.println(tipoComponente + " subido a Firebase.");
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

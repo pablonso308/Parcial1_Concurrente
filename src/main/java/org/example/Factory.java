@@ -3,8 +3,9 @@ package org.example;
 
 // La fábrica crea diferentes componentes
 class Factory {
-    public static Componentes crearComponente(String tipo) {
-        switch (tipo) {
+    // Método que crea un componente
+    public Componentes createComponent(String tipoComponente) {
+        switch (tipoComponente) {
             case "Base":
                 return new BaseCampana();
             case "Cúpula":
@@ -14,7 +15,7 @@ class Factory {
             case "Calibración":
                 return new SistemaCalibracion();
             default:
-                throw new IllegalArgumentException("Tipo de componente desconocido: " + tipo);
+                return null;
         }
     }
 }

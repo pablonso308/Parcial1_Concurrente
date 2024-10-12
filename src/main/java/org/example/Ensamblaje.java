@@ -1,26 +1,40 @@
 package org.example;
 
-import java.util.concurrent.CountDownLatch;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 class Ensamblaje extends Thread {
-    private CountDownLatch latch;
+    private DatabaseReference dbRef;
 
-    public Ensamblaje(CountDownLatch latch) {
-        this.latch = latch;
+    public Ensamblaje() {
+        this.dbRef = FirebaseDatabase.getInstance().getReference("componentes");
     }
 
     @Override
     public void run() {
         try {
             System.out.println("Esperando que todos los componentes estén listos...");
-            // Esperamos a que todas las estaciones terminen
-            latch.await();
 
-            // Simulamos el ensamblaje final
-            System.out.println("Todos los componentes listos. Ensamblando la campana de Gauss...");
-            Thread.sleep(2000);
-            System.out.println("Campana de Gauss ensamblada correctamente.");
-        } catch (InterruptedException e) {
+            // Escuchar cambios en Firebase
+            dbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String componente = snapshot.getValue(String.class);
+                        System.out.println("Ensamblando componente: " + componente);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.err.println("Error al leer Firebase: " + databaseError.getMessage());
+                }
+            });
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
