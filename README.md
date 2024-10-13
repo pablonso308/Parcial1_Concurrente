@@ -1,1 +1,3 @@
-link a mi repositorio: 
+link a mi repositorio: https://github.com/pablonso308/Parcial1_Concurrente.git
+
+Este proyecto implementa una simulación concurrente de un sistema de ensamblaje utilizando hilos en Java. Las estaciones de trabajo actúan como productores y consumidores en un modelo productor-consumidor, donde los componentes son ensamblados de forma independiente y sincronizada mediante un buffer compartido. También integra Firebase para almacenar datos en tiempo real y monitorizar el proceso. Está desarrollado utilizando Gradle para la gestión de dependencias y ofrece una interfaz gráfica para visualizar el progreso de la simulación.
