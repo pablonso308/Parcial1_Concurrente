@@ -1,7 +1,6 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class InterfazCampanas extends JFrame {
