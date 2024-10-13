@@ -21,32 +21,4 @@ class Componentes {
     }
 }
 
-// Ejemplos de componentes específicos
-class BaseCampana extends Componentes {
-    public BaseCampana() {
-        super("Base de la Campana");
-    }
-}
-
-class CupulaCampana extends Componentes {
-    public CupulaCampana() {
-        super("Cúpula de la Campana");
-    }
-}
-
-class SoporteCampana extends Componentes {
-    public SoporteCampana() {
-        super("Soporte de la Campana");
-    }
-}
-
-class SistemaCalibracion extends Componentes {
-    public SistemaCalibracion() {
-        super("Sistema de Calibración");
-    }
-}
-
-
-
-
 

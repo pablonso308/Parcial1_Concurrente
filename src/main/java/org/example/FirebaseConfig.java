@@ -1,23 +1,21 @@
 package org.example;
-
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.FirebaseDatabase;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 public class FirebaseConfig {
     public static void inicializarFirebase() throws IOException {
-        // Ruta al archivo JSON de configuración de Firebase
-        FileInputStream serviceAccount = new FileInputStream("ruta/al/archivo/google-services.json");
+        // Carga del archivo de credenciales JSON
+        FileInputStream serviceAccount = new FileInputStream("src/main/resources/google-services.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://<tu-proyecto>.firebaseio.com") // URL de la base de datos
+                .setDatabaseUrl("https://parcial1concurrente-96dc8.firebaseio.com") // Usa tu URL de Firebase
                 .build();
 
         FirebaseApp.initializeApp(options);
+        System.out.println("Firebase inicializado correctamente.");
     }
 }
-
